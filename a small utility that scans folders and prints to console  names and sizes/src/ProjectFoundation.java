@@ -4,7 +4,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class projectfoundation {
+public class ProjectFoundation {
 
     private static class PrintFiles extends SimpleFileVisitor<Path> {
 
@@ -16,7 +16,7 @@ public class projectfoundation {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if (attr.isRegularFile()) {
+            }else if (attr.isRegularFile()) {
                 System.out.format("Regular file: %s, size %d bytes\n", file, attr.size());
             }
             return FileVisitResult.CONTINUE;
@@ -34,12 +34,12 @@ public class projectfoundation {
          *
          * @param dirPath Path to directory.
          * @return Total size of all files included in dirPath.
-         * @throws IOException
+         * @throws IOException when something is wrong file system
          */
         private long getDirSize(Path dirPath) throws IOException {
             final AtomicLong size = new AtomicLong(0L);
 
-            Files.walkFileTree(dirPath, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(dirPath, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     size.addAndGet(attrs.size());
