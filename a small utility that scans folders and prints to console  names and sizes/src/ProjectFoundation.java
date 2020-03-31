@@ -1,72 +1,32 @@
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.EnumSet;
-import java.util.concurrent.atomic.AtomicLong;
+
 
 public class ProjectFoundation {
 
-    private static class PrintFiles extends SimpleFileVisitor<Path> {
-
-        @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
-            if (attr.isDirectory()) {
-                try {
-                    System.out.format("Directory: %s, size: %d bytes\n", file, getDirSize(file));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if (attr.isRegularFile()) {
-                System.out.format("Regular file: %s, size %d bytes\n", file, attr.size());
-            }
-            return FileVisitResult.CONTINUE;
-        }
-
-
-        @Override
-        public FileVisitResult visitFileFailed(Path file, IOException exc) {
-            System.err.println(exc);
-            return FileVisitResult.CONTINUE;
-        }
-
-        /**
-         * Walks through directory path and sums up all files' sizes.
-         *
-         * @param dirPath Path to directory.
-         * @return Total size of all files included in dirPath.
-         * @throws IOException when something is wrong file system
-         */
-        private long getDirSize(Path dirPath) throws IOException {
-            final AtomicLong size = new AtomicLong(0L);
-
-            Files.walkFileTree(dirPath, new SimpleFileVisitor<>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    size.addAndGet(attrs.size());
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path file, IOException exc) {
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-
-            return size.get();
-        }
+    public static void main(String[] args) {
+        File currentDir = new File("."); // current directory
+        displayDirectoryContents(currentDir);
     }
 
-    /**
-     * Main method.
-     *
-     * @param args
-     */
-    public static void main(String [] args) {
-        Path p = Paths.get("");
+    public static void displayDirectoryContents(File dir) {
         try {
-            Files.walkFileTree(p, EnumSet.noneOf(FileVisitOption.class), 1, new PrintFiles());
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                String string = "as";
+                if (file.isDirectory()) {
+                    System.out.println("directory:" + file.getCanonicalPath());
+                    displayDirectoryContents(file);
+                } else if (file.length()>100) {
+                    System.out.println("directory:" + file.getCanonicalPath());
+                }
+                else if (string.contains("as")) {
+                    System.out.println("directory:" + file.getCanonicalPath());
+                }
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-}
+    }
