@@ -13,16 +13,12 @@ public class ProjectFoundation {
         try {
             File[] files = dir.listFiles();
             for (File file : files) {
-                String string = "as";
                 if (file.isDirectory()) {
-                    System.out.println("directory:" + file.getCanonicalPath());
                     displayDirectoryContents(file);
-                } else if (file.length()>100) {
-                    System.out.println("directory:" + file.getCanonicalPath());
                 }
-                else if (string.contains("as")) {
-                    System.out.println("directory:" + file.getCanonicalPath());
-                }
+                else
+
+                if ( file.getName().toLowerCase().contains("as") || file.length() > 100) System.out.println(file.getCanonicalPath());
 
             }
         } catch (IOException e) {
